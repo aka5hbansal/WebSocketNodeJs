@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websocket-express-deployment
+  labels:
+    app: websocket-express
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: websocket-express
+  template:
+    metadata:
+      labels:
+        app: websocket-express
+    spec:
+      containers:
+      - name: websocket-express
+        image: aka5hbansal/websocket-express-app:latest
+        ports:
+        - containerPort: 8080
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: websocket-express-service
+spec:
+  selector:
+    app: websocket-express
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
